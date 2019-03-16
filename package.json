@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/dfujiwara/sf_events#readme",
   "dependencies": {
-    "eslint": "^5.15.2"
+    "eslint": "^5.15.2",
+    "rss-parser": "^3.7.0"
   }
 }
