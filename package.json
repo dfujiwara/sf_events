@@ -1,0 +1,19 @@
+{
+  "name": "sf_events",
+  "version": "1.0.0",
+  "description": "Notification service for upcoming events in the SF area",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfujiwara/sf_events.git"
+  },
+  "author": "daisuke.fujiwara@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dfujiwara/sf_events/issues"
+  },
+  "homepage": "https://github.com/dfujiwara/sf_events#readme"
+}
