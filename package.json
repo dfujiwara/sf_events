@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/dfujiwara/sf_events#readme",
   "dependencies": {
-    "needle": "^2.4.0"
+    "needle": "^2.4.0",
+    "open-graph-scraper": "^3.6.1"
   },
   "devDependencies": {
     "eslint": "^5.16.0"
