@@ -114,9 +114,7 @@ const email = (subject, html, recipients = config.recipients, emailUserName = co
     html: html
   })
 
-  console.log(html)
   recipients.map(recipient => {
-    console.log(recipient)
     sendEmail({ to: recipient }, (err, res) => {
       if (err != null) {
         console.error(err)
