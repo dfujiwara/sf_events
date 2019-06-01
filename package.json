@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/dfujiwara/sf_events#readme",
   "dependencies": {
+    "gmail-send": "^1.2.14",
     "needle": "^2.4.0",
     "open-graph-scraper": "^3.6.1"
   },
