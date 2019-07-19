@@ -89,8 +89,11 @@ const generateHTML = (openGraphEvents) => {
       const [event, openGraph] = openGraphEvent
       return `
         <div>
-          <a href='${event.link}'>${event.name}</a> - ${event.date}
-          <img src='${openGraph.image}'>
+          <a href='${event.link}'>${event.name}</a> - <time>${event.date}</time>
+          <div>${openGraph.description || 'No description'}</div>
+          <div>
+            <img src='${openGraph.image}'/>
+          </div>
         </div>`
     })
     .reduce((html, eventDiv) => html + eventDiv, '')
