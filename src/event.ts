@@ -9,9 +9,23 @@ export class Event {
     readonly date: Date
     readonly link: string
 
-    constructor(domain = 'https://www.sfjazz.org', eventData: EventData) {
+    constructor(domain: String, eventData: EventData) {
         this.name = eventData.name
         this.date = new Date(eventData.eventDate)
         this.link = `${domain}${eventData.detailsLink}`
+    }
+}
+
+export class OpenGraph {
+    readonly title: string
+    readonly url: string
+    readonly image: string
+    readonly description: string
+
+    constructor(openGraphData) {
+        this.title = openGraphData.data.ogTitle
+        this.url = openGraphData.data.ogUrl
+        this.image = openGraphData.data.ogImage.url
+        this.description = openGraphData.data.ogDescription
     }
 }

@@ -1,31 +1,20 @@
-const emailSend = require('gmail-send')
+import config from './config'
+import { email } from './email'
+import SFJazz from './sf-jazz'
 
-export const email = (
-    subject: string,
-    html: string,
-    recipients: string[],
-    emailUserName: string,
-    password: string
-) => {
-  const sendEmail = emailSend({
-    user: emailUserName,
-    pass: password,
-    subject: subject,
-    html: html
-  })
-
-  recipients.map(recipient => {
-    sendEmail({ to: recipient }, (err, res) => {
-      if (err != null) {
-        console.error(err)
-      } else {
-        console.log(res)
-      }
-    })
-  })
+const run = async () => {
+  try {
+    const sfJazz = new SFJazz()
+    const openGraphEvents = await sfJazz.fetchListing()
+    const generatedHTML = generateHTML(openGraphEvents)
+    email('SF JAZZ!', generatedHTML, config.recipients, config.emailUserName, config.password)
+  } catch(error) {
+    console.error(error)
+    return
+  }
 }
 
-export const generateHTML = (openGraphEvents) => {
+const generateHTML = (openGraphEvents) => {
   const divCollection = openGraphEvents
     .map((openGraphEvent) => {
       const [event, openGraph] = openGraphEvent
@@ -50,3 +39,5 @@ export const generateHTML = (openGraphEvents) => {
   </html>
   `
 }
+
+run()
