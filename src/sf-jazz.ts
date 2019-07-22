@@ -50,9 +50,9 @@ export default class SFJazz {
         })
     }
 
-    private async fetchEventPageOpenGraphData(event) {
+    private async fetchEventPageOpenGraphData(event: Event) {
         const options = { url: event.link }
         const result = await ogs(options)
-        return new OpenGraph(result)
+        return new OpenGraph(result.data)
     }
 }
