@@ -13,7 +13,7 @@ class SFJazz implements EventSource {
         return `https://www.sfjazz.org/ace-api/events?startDate=${dateString}&endDate=${futureDateString}`
     }
 
-    async fetchListing(date = new Date()): Promise<[Event, OpenGraph][]> {
+    async fetchListing(date: Date): Promise<[Event, OpenGraph][]> {
         const url = this.generateURL(date)
         const eventData = await this.fetch(url)
         const events = eventData.map((data: EventData) => new Event('https://www.sfjazz.org', data))

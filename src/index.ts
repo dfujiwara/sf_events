@@ -1,17 +1,20 @@
 import config from './config'
 import { email } from './email'
 import { sfJazz } from './sf-jazz'
-import { generateHTML } from './event'
+import { generateHTML, EventSource } from './event'
 
-const run = async () => {
+const run = async (eventSources: EventSource[]) => {
   try {
-    const openGraphEvents = await sfJazz.fetchListing()
-    const generatedHTML = generateHTML(sfJazz, openGraphEvents)
-    email('SF Events!', generatedHTML, config.recipients, config.emailUserName, config.password)
+    const eventPromises = eventSources.map(async (eventSource) => {
+      const openGraphEvents = await eventSource.fetchListing(new Date())
+      return generateHTML(eventSource, openGraphEvents)
+    })
+    const generatedHTMLSnippets = await Promise.all(eventPromises)
+    email('SF Events!', generatedHTMLSnippets.join('\n'), config.recipients, config.emailUserName, config.password)
   } catch(error) {
     console.error(error)
     return
   }
 }
 
-run()
+run([sfJazz])
