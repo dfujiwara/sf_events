@@ -24,29 +24,3 @@ export const email = (
     })
   })
 }
-
-export const generateHTML = (openGraphEvents) => {
-  const divCollection = openGraphEvents
-    .map((openGraphEvent) => {
-      const [event, openGraph] = openGraphEvent
-      return `
-        <div>
-          <a href='${event.link}'>${event.name}</a> - <time>${event.date}</time>
-          <div>${openGraph.description || 'No description'}</div>
-          <div>
-            <img src='${openGraph.image}'/>
-          </div>
-        </div>`
-    })
-    .reduce((html, eventDiv) => html + eventDiv, '')
-  return `
-  <!doctype html>
-  <html>
-    <head>
-    </head>
-    <body>
-      ${divCollection}
-    </body>
-  </html>
-  `
-}

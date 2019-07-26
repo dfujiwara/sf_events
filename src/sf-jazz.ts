@@ -1,8 +1,10 @@
 const needle = require('needle')
 const ogs = require('open-graph-scraper')
-import { OpenGraph, Event, EventData } from './event'
+import { OpenGraph, Event, EventData, EventSource } from './event'
 
-export default class SFJazz {
+class SFJazz implements EventSource {
+    name = "SF Jazz"
+
     private generateURL(date: Date) {
         const twoWeeksInMilliseconds = 14 * 24 * 60 * 60 * 1000
         const futureDate = new Date(date.getTime() + twoWeeksInMilliseconds)
@@ -11,13 +13,13 @@ export default class SFJazz {
         return `https://www.sfjazz.org/ace-api/events?startDate=${dateString}&endDate=${futureDateString}`
     }
 
-    async fetchListing(date = new Date()) {
+    async fetchListing(date = new Date()): Promise<[Event, OpenGraph][]> {
         const url = this.generateURL(date)
         const eventData = await this.fetch(url)
         const events = eventData.map((data: EventData) => new Event('https://www.sfjazz.org', data))
         const dedupedEvents = this.dedupeEvents(events)
         const openGraphPromises = dedupedEvents
-            .map(async (event) => {
+            .map(async (event): Promise<[Event, OpenGraph]> => {
                 try {
                     return [event, await this.fetchEventPageOpenGraphData(event)]
                 } catch (error) {
@@ -56,3 +58,6 @@ export default class SFJazz {
         return new OpenGraph(result.data)
     }
 }
+
+const sfJazz = new SFJazz()
+export { sfJazz }
