@@ -4,7 +4,7 @@
   "description": "Notification service for upcoming events in the SF area",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tsc --outDir dist src/*.ts && echo 'No tests yet'",
     "start": "tsc --outDir dist src/*.ts && node dist/index.js",
     "lint": "./node_modules/.bin/eslint *.js"
   },
@@ -21,7 +21,8 @@
   "dependencies": {
     "gmail-send": "^1.2.14",
     "needle": "^2.4.0",
-    "open-graph-scraper": "^3.6.1"
+    "open-graph-scraper": "^3.6.1",
+    "typescript": "^3.5.3"
   },
   "devDependencies": {
     "eslint": "^5.16.0"
