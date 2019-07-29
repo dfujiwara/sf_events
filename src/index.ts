@@ -1,6 +1,6 @@
 import config from './config'
 import { email } from './email'
-import { sfJazz } from './sf-jazz'
+import { SFJazz } from './sf-jazz'
 import { generateHTML, EventSource } from './event'
 
 const run = async (eventSources: EventSource[]) => {
@@ -17,4 +17,4 @@ const run = async (eventSources: EventSource[]) => {
   }
 }
 
-run([sfJazz])
+run([new SFJazz()])

@@ -2,7 +2,7 @@ const needle = require('needle')
 const ogs = require('open-graph-scraper')
 import { OpenGraph, Event, EventData, EventSource } from './event'
 
-class SFJazz implements EventSource {
+export class SFJazz implements EventSource {
     name = "SF Jazz"
 
     private generateURL(date: Date) {
@@ -58,6 +58,3 @@ class SFJazz implements EventSource {
         return new OpenGraph(result.data)
     }
 }
-
-const sfJazz = new SFJazz()
-export { sfJazz }
