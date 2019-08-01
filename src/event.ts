@@ -42,17 +42,32 @@ export interface EventSource {
     fetchListing(date: Date): Promise<[Event, OpenGraph][]>
 }
 
+const styleTag = `
+<style>
+  .container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+</style>
+`
+
 export function generateHTML(eventSource: EventSource, openGraphEvents: [Event, OpenGraph][]) {
   const divCollection = openGraphEvents
     .map((openGraphEvent) => {
       const [event, openGraph] = openGraphEvent
       return `
-        <div>
-          <a href='${event.link}'>${event.name}</a> - <time>${event.date}</time>
-          <div>${openGraph.description || 'No description'}</div>
+        <div class='container'>
+          <h3><a href='${event.link}'>${event.name}</a></h3>
+          <div>${event.date.toLocaleDateString('en-US', {hour: '2-digit', minute: '2-digit'})}</div>
           <div>
-            <img src='${openGraph.image}'/>
+            <a href='${event.link}'>
+              <img src='${openGraph.image}'/>
+            </a>
           </div>
+          <p>
+            ${openGraph.description || 'No description'}
+          </p>
         </div>`
     })
     .reduce((html, eventDiv) => html + eventDiv, '')
@@ -60,6 +75,7 @@ export function generateHTML(eventSource: EventSource, openGraphEvents: [Event, 
   <!doctype html>
   <html>
     <head>
+      ${styleTag}
     </head>
     <body>
       <h1>${eventSource.name}</h1
