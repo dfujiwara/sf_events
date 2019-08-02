@@ -6,7 +6,7 @@
   "scripts": {
     "test": "tsc && echo 'No tests yet'",
     "start": "tsc && node dist/index.js",
-    "lint": "./node_modules/.bin/eslint *.js"
+    "lint": "eslint \"src/**\""
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
     "open-graph-scraper": "^3.6.2"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^5.16.0",
     "typescript": "^3.5.3"
   }

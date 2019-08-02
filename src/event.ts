@@ -5,11 +5,11 @@ export interface EventData {
 }
 
 export class Event {
-    readonly name: string
-    readonly date: Date
-    readonly link: string
+    public readonly name: string
+    public readonly date: Date
+    public readonly link: string
 
-    constructor(domain: String, eventData: EventData) {
+    public constructor(domain: string, eventData: EventData) {
         this.name = eventData.name
         this.date = new Date(eventData.eventDate)
         this.link = `${domain}${eventData.detailsLink}`
@@ -24,12 +24,12 @@ export interface OpenGraphData {
 }
 
 export class OpenGraph {
-    readonly title: string
-    readonly url: string
-    readonly image: string
-    readonly description: string
+    public readonly title: string
+    public readonly url: string
+    public readonly image: string
+    public readonly description: string
 
-    constructor(openGraphData: OpenGraphData) {
+    public constructor(openGraphData: OpenGraphData) {
         this.title = openGraphData.ogTitle
         this.url = openGraphData.ogUrl
         this.image = openGraphData.ogImage.url
