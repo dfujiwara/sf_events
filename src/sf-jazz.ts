@@ -18,18 +18,19 @@ export class SFJazz implements EventSource {
         const eventData = await this.fetch(url)
         const events: Event[] = eventData.map((data: EventData) => new Event('https://www.sfjazz.org', data))
         let list: [Event, OpenGraph][] = []
+        let openGraphCache = new Map<string, OpenGraph>()
         const promise = events.slice(1)
             .reduce((promise, event) => {
                 return promise
                     .then((resolvedValue) => {
                         list.push(resolvedValue)
-                        return this.fetchEventPageOpenGraphData(event)
+                        return this.fetchEventPageOpenGraphData(event, openGraphCache)
                     })
                     .catch((error) => {
                         console.error(error)
-                        return this.fetchEventPageOpenGraphData(event)
+                        return this.fetchEventPageOpenGraphData(event, openGraphCache)
                     })
-            }, this.fetchEventPageOpenGraphData(events[0]))
+            }, this.fetchEventPageOpenGraphData(events[0], openGraphCache))
             .then((resolvedValue) => {
                list.push(resolvedValue)
             })
@@ -45,10 +46,17 @@ export class SFJazz implements EventSource {
         return response.body
     }
 
-    private async fetchEventPageOpenGraphData(event: Event): Promise<[Event, OpenGraph]> {
+    private async fetchEventPageOpenGraphData(event: Event, cache: Map<string, OpenGraph>): Promise<[Event, OpenGraph]> {
+        const cachedOpenGraph = cache.get(event.link)
+        if (cachedOpenGraph !== undefined) {
+            console.log(`in cache ${event.link}`)
+            return Promise.resolve([event, cachedOpenGraph])
+        }
         console.log(`fetching ${event.link}`)
         const options = { url: event.link }
         const result = await ogs(options)
-        return [event, new OpenGraph(result.data)]
+        const openGraph = new OpenGraph(result.data)
+        cache.set(event.link, openGraph)
+        return [event, openGraph]
     }
 }
