@@ -46,8 +46,17 @@ const styleTag = `
 <style>
   .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-direction: column;
+  }
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .title-link {
+  }
+  .title-time {
+    align-self: center;
   }
 </style>
 `
@@ -58,8 +67,14 @@ export function generateHTML(eventSource: EventSource, openGraphEvents: [Event, 
       const [event, openGraph] = openGraphEvent
       return `
         <div class='container'>
-          <h3><a href='${event.link}'>${event.name}</a></h3>
-          <div>${event.date.toLocaleDateString('en-US', {hour: '2-digit', minute: '2-digit'})}</div>
+          <div class='title-container'>
+            <h3 class='title-link'>
+              <a href='${event.link}'>${event.name}</a>
+            </h3>
+            <div class='title-time'>
+              ${event.date.toLocaleDateString('en-US', {hour: '2-digit', minute: '2-digit'})}
+            </div>
+          </div>
           <div>
             <a href='${event.link}'>
               <img src='${openGraph.image}'/>
