@@ -37,10 +37,13 @@ export class OpenGraph {
     }
 }
 
+export type OpenGraphEvent = [Event, OpenGraph]
+
 export interface EventSource {
     name: string
-    fetchListing(date: Date): Promise<[Event, OpenGraph][]>
+    fetchListing(date: Date): Promise<OpenGraphEvent[]>
 }
+
 
 const styleTag = `
 <style>
@@ -61,7 +64,7 @@ const styleTag = `
 </style>
 `
 
-export function generateHTML(eventSource: EventSource, openGraphEvents: [Event, OpenGraph][]) {
+export function generateHTML(eventSource: EventSource, openGraphEvents: OpenGraphEvent[]) {
   const divCollection = openGraphEvents
     .map((openGraphEvent) => {
       const [event, openGraph] = openGraphEvent
