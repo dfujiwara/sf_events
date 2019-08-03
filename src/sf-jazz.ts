@@ -3,7 +3,7 @@ const ogs = require('open-graph-scraper')
 import { OpenGraph, Event, EventData, EventSource } from './event'
 
 export class SFJazz implements EventSource {
-    name = "SF Jazz"
+    public name = "SF Jazz"
 
     private generateURL(date: Date) {
         const twoWeeksInMilliseconds = 14 * 24 * 60 * 60 * 1000
@@ -13,7 +13,7 @@ export class SFJazz implements EventSource {
         return `https://www.sfjazz.org/ace-api/events?startDate=${dateString}&endDate=${futureDateString}`
     }
 
-    async fetchListing(date: Date): Promise<[Event, OpenGraph][]> {
+    public async fetchListing(date: Date): Promise<[Event, OpenGraph][]> {
         const url = this.generateURL(date)
         const eventData = await this.fetch(url)
         const events = eventData.map((data: EventData) => new Event('https://www.sfjazz.org', data))
