@@ -1,6 +1,6 @@
 const needle = require('needle')
 const ogs = require('open-graph-scraper')
-import { OpenGraph, Event, EventData, EventSource } from './event'
+import { OpenGraph, Event, EventData, EventSource, OpenGraphEvent } from './event'
 
 export class SFJazz implements EventSource {
     public name = "SF Jazz"
@@ -13,11 +13,11 @@ export class SFJazz implements EventSource {
         return `https://www.sfjazz.org/ace-api/events?startDate=${dateString}&endDate=${futureDateString}`
     }
 
-    public async fetchListing(date: Date): Promise<[Event, OpenGraph][]> {
+    public async fetchListing(date: Date): Promise<OpenGraphEvent[]> {
         const url = this.generateURL(date)
         const eventData = await this.fetch(url)
         const events: Event[] = eventData.map((data: EventData) => new Event('https://www.sfjazz.org', data))
-        let list: [Event, OpenGraph][] = []
+        let list: OpenGraphEvent[] = []
         let openGraphCache = new Map<string, OpenGraph>()
         const promise = events.slice(1)
             .reduce((promise, event) => {
@@ -46,7 +46,7 @@ export class SFJazz implements EventSource {
         return response.body
     }
 
-    private async fetchEventPageOpenGraphData(event: Event, cache: Map<string, OpenGraph>): Promise<[Event, OpenGraph]> {
+    private async fetchEventPageOpenGraphData(event: Event, cache: Map<string, OpenGraph>): Promise<OpenGraphEvent> {
         const cachedOpenGraph = cache.get(event.link)
         if (cachedOpenGraph !== undefined) {
             console.log(`in cache ${event.link}`)
