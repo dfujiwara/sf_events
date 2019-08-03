@@ -1,45 +1,45 @@
 export interface EventData {
-    name: string
-    eventDate: Date
-    detailsLink: string
+  name: string
+  eventDate: Date
+  detailsLink: string
 }
 
 export class Event {
-    public readonly name: string
-    public readonly date: Date
-    public readonly link: string
+  public readonly name: string
+  public readonly date: Date
+  public readonly link: string
 
-    public constructor(domain: string, eventData: EventData) {
-        this.name = eventData.name
-        this.date = new Date(eventData.eventDate)
-        this.link = `${domain}${eventData.detailsLink}`
-    }
+  public constructor(domain: string, eventData: EventData) {
+    this.name = eventData.name
+    this.date = new Date(eventData.eventDate)
+    this.link = `${domain}${eventData.detailsLink}`
+  }
 }
 
 export interface OpenGraphData {
-    ogTitle: string
-    ogUrl: string
-    ogImage: {url: string}
-    ogDescription: string
+  ogTitle: string
+  ogUrl: string
+  ogImage: { url: string }
+  ogDescription: string
 }
 
 export class OpenGraph {
-    public readonly title: string
-    public readonly url: string
-    public readonly image: string
-    public readonly description: string
+  public readonly title: string
+  public readonly url: string
+  public readonly image: string
+  public readonly description: string
 
-    public constructor(openGraphData: OpenGraphData) {
-        this.title = openGraphData.ogTitle
-        this.url = openGraphData.ogUrl
-        this.image = openGraphData.ogImage.url
-        this.description = openGraphData.ogDescription
-    }
+  public constructor(openGraphData: OpenGraphData) {
+    this.title = openGraphData.ogTitle
+    this.url = openGraphData.ogUrl
+    this.image = openGraphData.ogImage.url
+    this.description = openGraphData.ogDescription
+  }
 }
 
 export interface EventSource {
-    name: string
-    fetchListing(date: Date): Promise<[Event, OpenGraph][]>
+  name: string
+  fetchListing(date: Date): Promise<[Event, OpenGraph][]>
 }
 
 const styleTag = `
@@ -63,7 +63,7 @@ const styleTag = `
 
 export function generateHTML(eventSource: EventSource, openGraphEvents: [Event, OpenGraph][]) {
   const divCollection = openGraphEvents
-    .map((openGraphEvent) => {
+    .map(openGraphEvent => {
       const [event, openGraph] = openGraphEvent
       return `
         <div class='container'>
@@ -72,7 +72,7 @@ export function generateHTML(eventSource: EventSource, openGraphEvents: [Event, 
               <a href='${event.link}'>${event.name}</a>
             </h3>
             <div class='title-time'>
-              ${event.date.toLocaleDateString('en-US', {hour: '2-digit', minute: '2-digit'})}
+              ${event.date.toLocaleDateString('en-US', { hour: '2-digit', minute: '2-digit' })}
             </div>
           </div>
           <div>

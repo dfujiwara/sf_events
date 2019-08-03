@@ -1,17 +1,11 @@
 const emailSend = require('gmail-send')
 
-export const email = (
-    subject: string,
-    html: string,
-    recipients: string[],
-    emailUserName: string,
-    password: string
-) => {
+export const email = (subject: string, html: string, recipients: string[], emailUserName: string, password: string) => {
   const sendEmail = emailSend({
     user: emailUserName,
     pass: password,
     subject: subject,
-    html: html
+    html: html,
   })
 
   recipients.map(recipient => {

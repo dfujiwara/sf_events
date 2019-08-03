@@ -1,7 +1,5 @@
 export default {
   emailUserName: process.env.EMAIL,
   password: process.env.PASSWORD,
-  recipients: [
-    'daisuke.fujiwara@gmail.com'
-  ]
+  recipients: ['daisuke.fujiwara@gmail.com'],
 }
