@@ -16,20 +16,25 @@ export class SFJazz implements EventSource {
     public async fetchListing(date: Date): Promise<[Event, OpenGraph][]> {
         const url = this.generateURL(date)
         const eventData = await this.fetch(url)
-        const events = eventData.map((data: EventData) => new Event('https://www.sfjazz.org', data))
-        const dedupedEvents = this.dedupeEvents(events)
-        const openGraphPromises = dedupedEvents
-            .map(async (event): Promise<[Event, OpenGraph]> => {
-                try {
-                    return [event, await this.fetchEventPageOpenGraphData(event)]
-                } catch (error) {
-                    console.error(error)
-                    return null
-                }
+        const events: Event[] = eventData.map((data: EventData) => new Event('https://www.sfjazz.org', data))
+        let list: [Event, OpenGraph][] = []
+        const promise = events.slice(1)
+            .reduce((promise, event) => {
+                return promise
+                    .then((resolvedValue) => {
+                        list.push(resolvedValue)
+                        return this.fetchEventPageOpenGraphData(event)
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                        return this.fetchEventPageOpenGraphData(event)
+                    })
+            }, this.fetchEventPageOpenGraphData(events[0]))
+            .then((resolvedValue) => {
+               list.push(resolvedValue)
             })
-        const openGraphEvents = await Promise.all(openGraphPromises)
-        const filteredOpenGraphEvents = openGraphEvents.filter((tuple) => tuple !== null)
-        return filteredOpenGraphEvents
+        await promise
+        return list
     }
 
     private async fetch(url: string) {
@@ -40,21 +45,10 @@ export class SFJazz implements EventSource {
         return response.body
     }
 
-    private dedupeEvents(events: Event[]): Event[] {
-        const linkSet = new Set()
-        return events.filter((event) => {
-            if (linkSet.has(event.link)) {
-                console.log(`deduping ${event.link}`)
-                return false
-            }
-            linkSet.add(event.link)
-            return true
-        })
-    }
-
-    private async fetchEventPageOpenGraphData(event: Event) {
+    private async fetchEventPageOpenGraphData(event: Event): Promise<[Event, OpenGraph]> {
+        console.log(`fetching ${event.link}`)
         const options = { url: event.link }
         const result = await ogs(options)
-        return new OpenGraph(result.data)
+        return [event, new OpenGraph(result.data)]
     }
 }
