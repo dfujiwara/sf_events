@@ -4,7 +4,7 @@
   "description": "Notification service for upcoming events in the SF area",
   "main": "index.js",
   "scripts": {
-    "test": "tsc && prettier --check src/*.ts && echo 'No tests yet'",
+    "test": "tsc && echo 'No tests yet'",
     "start": "tsc && node dist/index.js",
     "lint": "eslint \"src/**\""
   },
