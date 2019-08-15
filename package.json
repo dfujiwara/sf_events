@@ -4,8 +4,9 @@
   "description": "Notification service for upcoming events in the SF area",
   "main": "index.js",
   "scripts": {
-    "test": "tsc && echo 'No tests yet'",
-    "start": "tsc && node dist/index.js",
+    "test": "npm run build && echo 'No tests yet'",
+    "start": "npm run build && node dist/index.js",
+    "build": "tsc",
     "lint": "eslint \"src/**\""
   },
   "repository": {
