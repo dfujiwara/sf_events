@@ -17,6 +17,12 @@ export class SFJazz implements EventSource {
     const url = this.generateURL(date)
     const eventData = await this.fetch(url)
     const events: Event[] = eventData.map((data: EventData) => new Event('https://www.sfjazz.org', data))
+
+    if (events.length === 0) {
+      console.log('No events to process from SFJazz')
+      return []
+    }
+
     let list: [Event, OpenGraph][] = []
     let openGraphCache = new Map<string, OpenGraph>()
     const promise = events
