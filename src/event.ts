@@ -1,45 +1,21 @@
-export interface EventData {
+export interface Event {
   name: string
-  eventDate: Date
-  detailsLink: string
+  date: Date
+  link: string
+  image: string
+  description: string
 }
 
-export class Event {
-  public readonly name: string
-  public readonly date: Date
-  public readonly link: string
-
-  public constructor(domain: string, eventData: EventData) {
-    this.name = eventData.name
-    this.date = new Date(eventData.eventDate)
-    this.link = `${domain}${eventData.detailsLink}`
-  }
-}
-
-export interface OpenGraphData {
+export interface OpenGraph {
   ogTitle: string
   ogUrl: string
   ogImage: { url: string }
   ogDescription: string
 }
 
-export class OpenGraph {
-  public readonly title: string
-  public readonly url: string
-  public readonly image: string
-  public readonly description: string
-
-  public constructor(openGraphData: OpenGraphData) {
-    this.title = openGraphData.ogTitle
-    this.url = openGraphData.ogUrl
-    this.image = openGraphData.ogImage.url
-    this.description = openGraphData.ogDescription
-  }
-}
-
 export interface EventSource {
   name: string
-  fetchListing(date: Date): Promise<[Event, OpenGraph][]>
+  fetchListing(date: Date): Promise<Event[]>
 }
 
 const styleTag = `
@@ -61,10 +37,9 @@ const styleTag = `
 </style>
 `
 
-export function generateHTML(eventSource: EventSource, openGraphEvents: [Event, OpenGraph][]) {
-  const divCollection = openGraphEvents
-    .map(openGraphEvent => {
-      const [event, openGraph] = openGraphEvent
+export function generateHTML(eventSource: EventSource, events: Event[]) {
+  const divCollection = events
+    .map(event => {
       return `
         <div class='container'>
           <div class='title-container'>
@@ -77,11 +52,11 @@ export function generateHTML(eventSource: EventSource, openGraphEvents: [Event, 
           </div>
           <div>
             <a href='${event.link}'>
-              <img src='${openGraph.image}'/>
+              <img src='${event.image}'/>
             </a>
           </div>
           <p>
-            ${openGraph.description || 'No description'}
+            ${event.description || 'No description'}
           </p>
         </div>`
     })
