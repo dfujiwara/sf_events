@@ -38,9 +38,10 @@ const styleTag = `
 `
 
 export function generateHTML(eventSource: EventSource, events: Event[]) {
-  const divCollection = events
-    .map(event => {
-      return `
+  const divCollection =
+    events
+      .map(event => {
+        return `
         <div class='container'>
           <div class='title-container'>
             <h3 class='title-link'>
@@ -59,8 +60,8 @@ export function generateHTML(eventSource: EventSource, events: Event[]) {
             ${event.description || 'No description'}
           </p>
         </div>`
-    })
-    .reduce((html, eventDiv) => html + eventDiv, '')
+      })
+      .reduce((html, eventDiv) => html + eventDiv, '') || '<div>No Events</div>'
   return `
   <!doctype html>
   <html>
@@ -68,7 +69,7 @@ export function generateHTML(eventSource: EventSource, events: Event[]) {
       ${styleTag}
     </head>
     <body>
-      <h1>${eventSource.name}</h1
+      <h1>${eventSource.name}</h1>
       ${divCollection}
     </body>
   </html>
