@@ -8,29 +8,17 @@ interface EventData {
   detailsLink: string
 }
 
-class SFJazzEvent {
-  public readonly name: string
-  public readonly date: Date
-  public readonly link: string
-
-  public constructor(domain: string, eventData: EventData) {
-    this.name = eventData.name
-    this.date = new Date(eventData.eventDate)
-    this.link = `${domain}${eventData.detailsLink}`
-  }
-}
-
-class SFJazzFullEvent implements Event {
+class SFJazzEvent implements Event {
   public readonly name: string
   public readonly date: Date
   public readonly link: string
   public readonly image: string
   public readonly description: string
 
-  public constructor(event: SFJazzEvent, openGraph: OpenGraph) {
+  public constructor(event: EventData, openGraph: OpenGraph) {
     this.name = event.name
-    this.date = event.date
-    this.link = event.link
+    this.date = new Date(event.eventDate)
+    this.link = openGraph.ogUrl
     this.image = openGraph.ogImage.url
     this.description = openGraph.ogDescription
   }
@@ -50,14 +38,13 @@ export class SFJazz implements EventSource {
   public async fetchListing(date: Date): Promise<Event[]> {
     const url = this.generateURL(date)
     const eventData = await this.fetch(url)
-    const events: SFJazzEvent[] = eventData.map((data: EventData) => new SFJazzEvent('https://www.sfjazz.org', data))
-    if (events.length === 0) {
+    if (eventData.length === 0) {
       console.log('No events to process from SFJazz')
       return []
     }
-    let list: [SFJazzEvent, OpenGraph][] = []
+    let list: [EventData, OpenGraph][] = []
     let openGraphCache = new Map<string, OpenGraph>()
-    const promise = events
+    const promise = eventData
       .slice(1)
       .reduce((promise, event) => {
         return promise
@@ -69,14 +56,14 @@ export class SFJazz implements EventSource {
             console.error(error)
             return this.fetchEventPageOpenGraphData(event, openGraphCache)
           })
-      }, this.fetchEventPageOpenGraphData(events[0], openGraphCache))
+      }, this.fetchEventPageOpenGraphData(eventData[0], openGraphCache))
       .then(resolvedValue => {
         list.push(resolvedValue)
       })
     await promise
     return list.map(eventTuple => {
       const [event, openGraph] = eventTuple
-      return new SFJazzFullEvent(event, openGraph)
+      return new SFJazzEvent(event, openGraph)
     })
   }
 
@@ -89,19 +76,20 @@ export class SFJazz implements EventSource {
   }
 
   private async fetchEventPageOpenGraphData(
-    event: SFJazzEvent,
+    event: EventData,
     cache: Map<string, OpenGraph>,
-  ): Promise<[SFJazzEvent, OpenGraph]> {
-    const cachedOpenGraph = cache.get(event.link)
+  ): Promise<[EventData, OpenGraph]> {
+    const pageURL = 'https://www.sfjazz.org' + event.detailsLink
+    const cachedOpenGraph = cache.get(pageURL)
     if (cachedOpenGraph !== undefined) {
-      console.log(`in cache ${event.link}`)
+      console.log(`in cache ${pageURL}`)
       return Promise.resolve([event, cachedOpenGraph])
     }
-    console.log(`fetching ${event.link}`)
-    const options = { url: event.link }
+    console.log(`fetching ${pageURL}`)
+    const options = { url: pageURL }
     const result = await ogs(options)
     const openGraph = result.data
-    cache.set(event.link, result.data)
+    cache.set(pageURL, result.data)
     return [event, openGraph]
   }
 }
