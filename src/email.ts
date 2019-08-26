@@ -1,4 +1,4 @@
-const emailSend = require('gmail-send')
+import * as emailSend from 'gmail-send'
 
 export const email = (subject: string, html: string, recipients: string[], emailUserName: string, password: string) => {
   const sendEmail = emailSend({

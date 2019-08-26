@@ -1,5 +1,5 @@
-const needle = require('needle')
-const ogs = require('open-graph-scraper')
+import * as needle from 'needle'
+import * as ogs from 'open-graph-scraper'
 import { OpenGraph, EventSource, Event } from './event'
 
 interface EventData {
