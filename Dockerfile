@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package.json package-lock.json /app/
 COPY src /app/src
 COPY tsconfig.json /app/
+COPY scripts/run.sh /app/
+RUN chmod 755 /app/run.sh
 
 # Crontab set up
 COPY crontab /etc/cron.d/sf-events-cron
@@ -13,4 +15,4 @@ RUN touch /var/log/cron.log
 RUN npm install
 RUN npm run build
 
-CMD cron && tail -f /var/log/cron.log
+CMD /bin/sh /app/run.sh
