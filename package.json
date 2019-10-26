@@ -2,7 +2,7 @@
   "name": "sf_events",
   "version": "1.0.0",
   "description": "Notification service for upcoming events in the SF area",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "npm run build && jest",
     "start": "npm run build && node dist/index.js",
