@@ -4,17 +4,14 @@ import { SFJazz } from './sf-jazz'
 import { generateHTML, EventSource } from './event'
 
 const run = async (eventSources: EventSource[]) => {
-  try {
-    const eventPromises = eventSources.map(async eventSource => {
-      const events = await eventSource.fetchListing(new Date())
-      return generateHTML(eventSource, events)
-    })
-    const generatedHTMLSnippets = await Promise.all(eventPromises)
-    email('SF Events!', generatedHTMLSnippets.join('\n'), config.recipients, config.emailUserName, config.password)
-  } catch (error) {
-    console.error(error)
-    return
-  }
+  const eventPromises = eventSources.map(async eventSource => {
+    const events = await eventSource.fetchListing(new Date())
+    return generateHTML(eventSource, events)
+  })
+  const generatedHTMLSnippets = await Promise.all(eventPromises)
+  email('SF Events!', generatedHTMLSnippets.join('\n'), config.recipients, config.emailUserName, config.password)
 }
 
-run([new SFJazz()])
+exports.sfEvents = async () => {
+  return run([new SFJazz()])
+}
