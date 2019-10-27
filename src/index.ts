@@ -1,6 +1,7 @@
 import config from './config'
 import { email } from './email'
 import { SFJazz } from './sf-jazz'
+import { PunchLine } from './punch-line'
 import { generateHTML, EventSource } from './event'
 
 const run = async (eventSources: EventSource[]) => {
@@ -13,5 +14,5 @@ const run = async (eventSources: EventSource[]) => {
 }
 
 exports.sfEvents = async () => {
-  return run([new SFJazz()])
+  return run([new SFJazz(), new PunchLine()])
 }
