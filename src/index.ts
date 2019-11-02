@@ -12,6 +12,6 @@ const run = async (eventSources: EventSource[]) => {
   email('SF Events!', generatedHTMLSnippets.join('\n'), config.recipients, config.emailUserName, config.password)
 }
 
-exports.sfEvents = async () => {
+export function sfEvents() {
   return run([new SFJazz()])
 }
