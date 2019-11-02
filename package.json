@@ -8,7 +8,7 @@
     "start": "npm run build && node dist/index.js",
     "build": "tsc",
     "lint": "eslint \"src/**\"",
-    "local": "npm run build && functions-framework --target=sfEvents"
+    "local": "npm run build && functions-framework --target=sfEvents --signature-type=event"
   },
   "repository": {
     "type": "git",
