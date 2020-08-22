@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "npm run build && jest",
-    "start": "npm run build && gcloud functions deploy sf-events --entry-point sfEvents --runtime nodejs8 --env-vars-file env-list --trigger-topic sf_events_topic",
+    "start": "npm run build && gcloud functions deploy sf-events --entry-point sfEvents --runtime nodejs10 --env-vars-file env-list --trigger-topic sf_events_topic",
     "build": "tsc",
     "lint": "eslint \"src/**\"",
     "local": "npm run build && functions-framework --target=sfEvents --signature-type=event"
