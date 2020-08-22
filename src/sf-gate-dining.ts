@@ -1,6 +1,6 @@
 import * as ogs from 'open-graph-scraper'
 import * as Parser from 'rss-parser'
-import { OpenGraph, EventSource, Event } from './event'
+import { OpenGraph, EventSource, Event } from 'event'
 
 export class SFGateDining implements EventSource {
   public name = 'SF Gate Dining'
