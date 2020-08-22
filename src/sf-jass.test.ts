@@ -1,4 +1,4 @@
-import { SFJazz } from './sf-jazz'
+import { SFJazz } from 'sf-jazz'
 import * as needle from 'needle'
 import * as ogs from 'open-graph-scraper'
 
