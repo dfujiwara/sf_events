@@ -15,5 +15,6 @@ const run = async (eventSources: EventSource[]) => {
 
 export function sfEvents() {
   const sfGateDining = new RSSFeed('SF Gate Dining', 'https://www.sfgate.com/rss/feed/Food-Dining-550.php')
-  return run([new SFJazz(), sfGateDining])
+  const wireCutter = new RSSFeed('WireCutter', 'https://www.nytimes.com/wirecutter/feed/')
+  return run([new SFJazz(), sfGateDining, wireCutter])
 }
