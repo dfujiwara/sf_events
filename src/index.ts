@@ -1,7 +1,7 @@
 import config from './config'
 import { email } from './email'
 import { SFJazz } from './sf-jazz'
-import { SFGateDining } from './sf-gate-dining'
+import { RSSFeed } from './rss-feed'
 import { generateHTML, EventSource } from './event'
 
 const run = async (eventSources: EventSource[]) => {
@@ -14,5 +14,6 @@ const run = async (eventSources: EventSource[]) => {
 }
 
 export function sfEvents() {
-  return run([new SFJazz(), new SFGateDining()])
+  const sfGateDining = new RSSFeed('SF Gate Dining', 'https://www.sfgate.com/rss/feed/Food-Dining-550.php')
+  return run([new SFJazz(), sfGateDining])
 }
