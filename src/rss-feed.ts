@@ -5,9 +5,14 @@ import { OpenGraph, EventSource, Event } from './event'
 type RSSListing = [string, Date]
 type OpenGraphWithDate = OpenGraph & { date: Date }
 
-export class SFGateDining implements EventSource {
-  public name = 'SF Gate Dining'
-  private rssURL = 'https://www.sfgate.com/rss/feed/Food-Dining-550.php'
+export class RSSFeed implements EventSource {
+  public name: string
+  private rssURL: string
+
+  public constructor(name: string, url: string) {
+    this.name = name
+    this.rssURL = url
+  }
 
   public async fetchListing({}): Promise<Event[]> {
     const links = await this.fetchRSS()
