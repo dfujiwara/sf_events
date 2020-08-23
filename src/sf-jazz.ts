@@ -1,6 +1,6 @@
 import * as needle from 'needle'
 import * as ogs from 'open-graph-scraper'
-import { OpenGraph, EventSource, Event } from 'event'
+import { OpenGraph, EventSource, Event } from './event'
 
 interface EventData {
   name: string
