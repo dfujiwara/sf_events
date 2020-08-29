@@ -29,10 +29,16 @@ export class RSSFeed implements EventSource {
   private async fetchOpenGraph(listings: RSSListing[]): Promise<OpenGraphWithDate[]> {
     const promises = listings.map(async ([link, pubDate]) => {
       const options = { url: link }
-      const result = await ogs(options)
-      return { date: pubDate, ...result.data }
+      try {
+        const result = await ogs(options)
+        return { date: pubDate, ...result.data }
+      } catch (error) {
+        console.error(error)
+        return null
+      }
     })
-    return Promise.all(promises)
+    const openGraphDataList = await Promise.all(promises)
+    return openGraphDataList.filter(data => data !== null)
   }
 
   private createEvents(openGraphDataList: OpenGraphWithDate[]): Event[] {
