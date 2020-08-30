@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 echo 'Submitting sample json'
 
+cd $(dirname "$0")
 curl -d "@sample_pubsub_payload.json" \
     -X POST \
     -H "Ce-Type: true" \
