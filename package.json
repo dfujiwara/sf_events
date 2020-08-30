@@ -23,7 +23,7 @@
   "dependencies": {
     "gmail-send": "^1.8.10",
     "needle": "^2.4.0",
-    "open-graph-scraper": "^3.6.2",
+    "open-graph-scraper": "^4.5.1",
     "rss-parser": "^3.9.0"
   },
   "devDependencies": {
