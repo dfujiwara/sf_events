@@ -30,8 +30,8 @@ export class RSSFeed implements EventSource {
     const promises = listings.map(async ([link, pubDate]) => {
       const options = { url: link }
       try {
-        const result = await ogs(options)
-        return { date: pubDate, ...result.data }
+        const { result } = await ogs(options)
+        return { date: pubDate, ...result }
       } catch (error) {
         console.error(error)
         return null
