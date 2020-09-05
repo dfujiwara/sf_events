@@ -23,7 +23,11 @@ export class RSSFeed implements EventSource {
   private async fetchRSS(): Promise<RSSListing[]> {
     const parser = new Parser()
     const feed = await parser.parseURL(this.rssURL)
-    return feed.items.map(item => [item.link, new Date(item.pubDate)])
+    const weekDuration = 60 * 60 * 24 * 7 * 1000
+    const weekAgoTimestamp = new Date().getTime() - weekDuration
+    return feed.items
+      .map(item => [item.link, item.pubDate ? new Date(item.pubDate) : new Date()] as RSSListing)
+      .filter(([{}, date]) => date.getTime() > weekAgoTimestamp)
   }
 
   private async fetchOpenGraph(listings: RSSListing[]): Promise<OpenGraphWithDate[]> {
